@@ -19,7 +19,7 @@ function InputField(props) {
         onChange={(e) => {
           setVal(e.target.value);
           //   inpVal.current = e.target.value;
-          if (props.onChange) props?.onChange(e);
+          if (props.onChange) props.onChange(e);
         }}
       />
       {props.label && (

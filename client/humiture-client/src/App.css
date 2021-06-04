@@ -1,4 +1,5 @@
 .App {
+  min-height: 100vh;
 }
 
 html {
@@ -8,11 +9,11 @@ html {
 
 body {
   background-color: #ffffff00;
-  background-image: url("./assets/backgroundMedium.svg");
+  /* background-image: url("./assets/backgroundMedium.svg");
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;
-  background-size: cover;
+  background-size: cover; */
   position: relative;
   font-family: "Josefin Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -20,7 +21,7 @@ body {
   min-height: 100vh;
 }
 
-/* body::before {
+body::before {
   background-color: var(--primary);
   background-image: url("./assets/backgroundMedium.svg");
   background-repeat: no-repeat;
@@ -34,22 +35,22 @@ body {
   width: 100%;
   will-change: transform;
   z-index: -1;
-} */
+}
 
 @media (min-height: 800px) {
-  body {
+  body::before {
     background-image: url("./assets/backgroundLarge.svg");
   }
 }
 
 @media (orientation: landscape) and (max-width: 1536px) {
-  body {
+  body::before {
     background-image: url("./assets/background1488x754.svg");
   }
 }
 
 @media (orientation: landscape) and (min-width: 1536px) {
-  body {
+  body::before {
     background-image: url("./assets/background1600x900.svg");
   }
 }

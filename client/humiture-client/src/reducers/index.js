@@ -44,7 +44,7 @@ const rangeErrorReducer = (state, action) => {
 /**
  *
  * @returns [rangeError, dispatchRangeError]
- * @params type: "TEMPERATURE"/"HUMIDITY"/"REPORTED"/"RESET" payload: {[status: "OK"/"LOW"/"HIGH"],error: true/false [reported: boolean] }
+ * @params type: "TEMPERATURE"/"HUMIDITY"/"REPORTED"/"RESET" payload: {[status: "OK"/"LOW"/"HIGH"], error: true/false, [reported: boolean] }
  */
 
 const useRangeErrorReducer = () => {

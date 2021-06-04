@@ -1,0 +1,91 @@
+/* Form  */
+
+.auth {
+  position: relative;
+  min-width: 285px;
+  width: 70%;
+  max-width: 368px;
+  min-height: 368px;
+  background-color: #ffffff00;
+  margin: 2rem 0 0 2rem;
+  padding: 1rem;
+}
+
+.auth::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  background-color: var(--white);
+  border-radius: 15px;
+}
+
+.authFormHeader {
+  width: 100%;
+  margin: 2rem 0 2.1rem;
+  color: var(--blue);
+  text-align: center;
+  font-size: 28px;
+  font-weight: normal;
+}
+
+.errorInfo {
+  color: var(--red);
+  text-align: center;
+}
+
+.emailField {
+  margin-bottom: 2rem !important;
+}
+
+.authButton {
+  width: 86%;
+  height: 3rem;
+  display: block;
+  margin: 1.5rem auto;
+  font-size: 1.2rem;
+}
+
+.authButton:hover {
+  cursor: pointer;
+}
+
+.forgotPassword {
+  text-align: right;
+  color: var(--grey);
+  font-size: 0.9rem;
+  margin-right: 1.5rem;
+}
+
+.forgotPassword:hover {
+  color: var(--black);
+  cursor: pointer;
+}
+
+.createAccount {
+  color: var(--blue);
+  text-align: center;
+  font-size: 1rem;
+  margin: 1.2rem auto;
+}
+
+.createAccount:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .auth {
+    margin: 2rem auto;
+    width: 80%;
+  }
+}
+
+@media (max-width: 400px) {
+  .auth {
+    width: 100%;
+  }
+}

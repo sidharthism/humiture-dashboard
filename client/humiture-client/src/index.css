@@ -1,0 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;200;300;400&display=swap");
+
+:root {
+  --primary: #f9fafb;
+  --light-grey: #cccccc;
+  --grey: #777777ca;
+  --light-blue: #000ee6ba;
+  --light-blue-2: #000fe682;
+  --blue: #000ee6;
+  --red: #e94e4e;
+  --aqua: #59aacd;
+  --black: #373737;
+  --white: #ffffff;
+}
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+}

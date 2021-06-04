@@ -1,0 +1,55 @@
+.navContainer {
+  width: 100%;
+  padding: 1.5rem 3.7rem;
+}
+
+.navbar {
+  min-height: 75px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.branding {
+  display: flex;
+  align-items: center;
+}
+
+.branding > h2 {
+  color: var(--blue);
+  margin: 12px 8px 0;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  /* margin-right: 1rem; */
+  cursor: pointer;
+}
+
+.userInfo > h4 {
+  margin-top: 3px;
+  color: var(--black);
+  margin: 12px 8px 0;
+}
+
+.userInfo > .avatar {
+  margin: 12px 0 0 8px;
+}
+
+.chevronDown {
+  margin: 8px;
+}
+
+.chevronDown > svg {
+  margin-top: 1rem;
+}
+
+.chevronDown > svg > path {
+  stroke: var(--black) !important;
+}
+
+@media (max-width: 400px) {
+  .userInfo {
+    display: none;
+  }
+}

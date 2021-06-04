@@ -1,0 +1,84 @@
+.inputFieldContainer {
+  position: relative;
+  margin: 1.5rem;
+  /* width: 100%; */
+  /* max-width: 476px; */
+}
+
+.field {
+  border: none;
+  border-bottom: 2px solid var(--black);
+  outline: none;
+  padding: 0.3rem 0.25rem;
+  min-width: 200px;
+  font-size: 1rem;
+  background-color: #ffffff00;
+  width: 100%;
+  color: var(--black);
+  font-family: "Josefin Sans", sans-serif;
+  font-weight: 400;
+  -moz-outline-style: none;
+  outline-style: none;
+}
+
+.field::placeholder {
+  color: var(--grey);
+}
+
+.field[type="email"]::placeholder,
+.field[type="password"]::placeholder {
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
+
+.field[type="email"]:focus::placeholder,
+.field[type="password"]:focus::placeholder {
+  opacity: 1;
+}
+
+.field[type="text"]:focus {
+  border-bottom: 2px solid var(--blue) !important;
+}
+
+.field[type="email"]:focus,
+.field[type="password"]:focus {
+  border-color: var(--red);
+}
+
+.field[type="email"]:valid,
+.field[type="password"]:valid {
+  border-bottom: 2px solid var(--blue) !important;
+}
+
+.label {
+  position: absolute;
+  top: 0.3rem;
+  left: 0.25rem;
+  color: var(--grey);
+  transition: all 0.2s ease;
+  font-size: 1rem;
+  /* will-change: bottom, font-size; */
+  z-index: -1;
+}
+
+.field:focus ~ .label,
+.field:valid ~ .label,
+.notEmpty {
+  top: -0.7rem;
+  font-size: 0.725rem;
+}
+
+.info {
+  position: absolute;
+  font-size: 0.75rem;
+  bottom: -1.1rem;
+  left: 0.3rem;
+}
+
+.warning {
+  color: var(--red) !important;
+}
+
+/* .placeholderDefault::placeholder {
+  
+} */

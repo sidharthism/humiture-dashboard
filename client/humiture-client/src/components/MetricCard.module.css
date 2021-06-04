@@ -1,0 +1,77 @@
+.metricCard {
+  min-width: 285px;
+  width: 100%;
+  min-height: 300px;
+  border-radius: 28px;
+}
+
+.metricHeaderContainer {
+  display: flex;
+  padding: 2rem 2rem 1rem;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+h1[dtype="temperature"] {
+  color: var(--red) !important;
+}
+
+h1[dtype="humidity"] {
+  color: var(--aqua) !important;
+}
+
+.metricHeaderContainer > h1 {
+  color: var(--black);
+  font-weight: 300;
+  font-size: 3.2rem;
+}
+
+/* .metricHeaderContainer > h2 {
+  color: var(--black);
+  font-weight: 400;
+  margin-left: 1rem;
+} */
+
+.metricHeaderContainer > img {
+  height: 3.5rem;
+  margin-left: 1rem;
+}
+
+.metricHeaderContainer > img[dtype="humidity"] {
+  height: 72px;
+}
+
+/* Chart */
+
+.chartContainer {
+  margin: 10px auto 0;
+  padding: 1rem;
+  border-radius: 15px;
+  /* position: relative; */
+}
+
+.lineGraph {
+  height: 320px;
+  width: 100%;
+  /* width: 320px; */
+}
+
+@media (max-width: 1080px) {
+  .lineGraph {
+    height: 290px;
+  }
+}
+
+@media (max-width: 768px) {
+  .lineGraph {
+    height: 270px;
+  }
+}
+
+@media (max-width: 576px) {
+  .lineGraph {
+    height: 250px;
+  }
+}

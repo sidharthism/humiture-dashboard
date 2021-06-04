@@ -1,0 +1,83 @@
+.App {
+}
+
+html {
+  background-color: var(--primary);
+  min-height: 100vh;
+}
+
+body {
+  background-color: #ffffff00;
+  background-image: url("./assets/backgroundMedium.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  position: relative;
+  font-family: "Josefin Sans", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* body::before {
+  background-color: var(--primary);
+  background-image: url("./assets/backgroundMedium.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  content: "";
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  will-change: transform;
+  z-index: -1;
+} */
+
+@media (min-height: 800px) {
+  body {
+    background-image: url("./assets/backgroundLarge.svg");
+  }
+}
+
+@media (orientation: landscape) and (max-width: 1536px) {
+  body {
+    background-image: url("./assets/background1488x754.svg");
+  }
+}
+
+@media (orientation: landscape) and (min-width: 1536px) {
+  body {
+    background-image: url("./assets/background1600x900.svg");
+  }
+}
+
+/* code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+} */
+
+div {
+  transition: all 0.3s ease;
+}
+
+.recharts-legend-wrapper {
+  bottom: -12px !important;
+}
+
+.custom-tooltip {
+  padding: 10px;
+  background-color: #ffffffb3;
+  border: 2px solid #c3c3c3;
+  border-radius: 10px;
+}
+
+.custom-tooltip p {
+  margin: 8px 0;
+}
+
+.custom-tooltip span {
+  font-weight: bold;
+}

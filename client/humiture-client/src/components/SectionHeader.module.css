@@ -1,0 +1,13 @@
+.sectionHeader {
+  width: 95%;
+  min-width: 285px;
+  margin: 0 auto;
+  height: 3.7rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sectionHeader > h3 {
+  color: var(--light-blue);
+}

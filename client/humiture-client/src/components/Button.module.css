@@ -1,0 +1,23 @@
+.button {
+  background-color: var(--blue);
+  padding: 0.5rem;
+  min-height: 12px;
+  min-width: 12px;
+  color: var(--white);
+  border-radius: 10px;
+  font-family: "Josefin Sans", sans-serif;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  transition: all 0.1s ease !important;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0px 4px 4px #00000040;
+}
+
+.button:active {
+  transform: translateY(0px);
+  box-shadow: none;
+}

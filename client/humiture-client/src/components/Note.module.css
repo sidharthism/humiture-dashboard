@@ -1,0 +1,44 @@
+.noteContainer,
+.savedNoteContainer {
+  display: flex;
+  width: 95%;
+  margin: 0 auto 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.noteFieldContainer {
+  margin: 0.5rem;
+}
+
+.addButton,
+.deleteButton {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.addButton > img,
+.deleteButton > img {
+  height: 1.5rem;
+}
+
+.deleteButton {
+  background-color: var(--red);
+}
+
+.noteFieldContainer {
+  flex: 1 1 auto;
+  position: relative;
+  top: 0.37rem;
+}
+
+.savedNoteFieldContainer {
+  top: 0.2rem !important;
+}
+
+.savedNoteFieldContainer > input {
+  border-bottom: 1px solid var(--light-grey);
+  min-width: 120px;
+}

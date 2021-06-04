@@ -1,0 +1,31 @@
+.reportContainer {
+  margin: 1rem 0;
+  flex-direction: column;
+  flex: 1 1 70%;
+}
+
+/* Metrics */
+
+.metricsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 95%;
+  margin: 2.3rem auto 1rem;
+  gap: 1.5rem;
+}
+
+.temperatureContainer,
+.humidityContainer {
+  flex: 1 1 calc(50% - 3rem);
+  min-width: 25%;
+}
+
+@media (max-width: 768px) {
+  .temperatureContainer,
+  .humidityContainer {
+    min-width: 50%;
+  }
+}

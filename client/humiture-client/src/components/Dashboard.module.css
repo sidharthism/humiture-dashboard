@@ -6,75 +6,8 @@
   flex-wrap: wrap;
 }
 
-.reportContainer,
-.notesContainer {
-  margin: 1rem 0;
-  flex-direction: column;
-}
-
-.reportContainer {
-  flex: 1 1 70%;
-}
-
-.notesContainer {
-  flex: 1 1 30%;
-}
-
-/* Metrics */
-
-.metricsContainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  width: 95%;
-  margin: 2.3rem auto 1rem;
-  gap: 1.5rem;
-}
-
-.temperatureContainer,
-.humidityContainer {
-  flex: 1 1 calc(50% - 3rem);
-  min-width: 25%;
-}
-
-.notesWrap {
-  /* margin: 2.3rem 0; */
-  margin: 2.3rem auto;
-  width: 95%;
-}
-
-.notesList {
-  max-height: 352px;
-  min-width: 250px;
-  background-color: var(--white);
-  border-radius: 1rem;
-  padding-top: 0.5rem;
-  border: 1px solid var(--light-grey);
-  overflow-y: scroll;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-
-.notesList::-webkit-scrollbar {
-  display: none;
-}
-
-/* .notesList > li {
-  padding-inline-start: 1ch;
-  list-style-type: "📝";
-} */
-
 @media (max-width: 400px) {
   .container {
     padding: 0 1.7rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .temperatureContainer,
-  .humidityContainer {
-    min-width: 50%;
   }
 }

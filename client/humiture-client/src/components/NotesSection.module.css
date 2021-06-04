@@ -1,0 +1,32 @@
+.notesContainer {
+  margin: 1rem 0;
+  flex-direction: column;
+  flex: 1 1 30%;
+}
+
+.notesWrap {
+  /* margin: 2.3rem 0; */
+  margin: 2.3rem auto;
+  width: 95%;
+}
+
+.notesList {
+  max-height: 352px;
+  min-width: 250px;
+  background-color: var(--white);
+  border-radius: 1rem;
+  padding-top: 0.5rem;
+  border: 1px solid var(--light-grey);
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.notesList::-webkit-scrollbar {
+  display: none;
+}
+
+/* .notesList > li {
+  padding-inline-start: 1ch;
+  list-style-type: "📝";
+} */

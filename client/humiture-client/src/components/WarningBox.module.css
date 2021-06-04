@@ -1,0 +1,29 @@
+.warningBox {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  padding: 1.2rem;
+  min-width: 100px;
+  background-color: var(--warning);
+  border-radius: 15px;
+  z-index: 99;
+}
+
+.warningBox > h4 {
+  color: var(--white);
+}
+
+.warningBox > button {
+  margin-top: 0.5rem;
+  background-color: var(--red);
+  color: var(--white);
+  outline: none;
+  border: none;
+}
+
+@media (orientation: landscape) and (min-width: 978px) {
+  .warningBox {
+    right: 2.7rem !important;
+    bottom: 2.7rem !important;
+  }
+}

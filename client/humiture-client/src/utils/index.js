@@ -48,6 +48,22 @@ const getMetricAvgFromRange = (arr = [], start = 0, end = 0, metric = "") => {
   return avg.toFixed(1);
 };
 
+/**
+ * @params metric,lowerBound, upperBound, val
+ * @returns {type: metric, error: true/false, status: "OK"/"LOW"/"HIGH"}
+ */
+
+const isMetricOutOfRange = (metric, lowerBound, upperBound, val) => {
+  let STATUS = { type: metric, error: false, status: "OK" };
+  if (Number(val) > Number(lowerBound) && Number(val) < Number(upperBound))
+    return STATUS;
+  else if (Number(val) < Number(lowerBound))
+    return { ...STATUS, error: true, status: "LOW" };
+  else if (Number(val) > Number(upperBound))
+    return { ...STATUS, error: true, status: "HIGH" };
+  else return STATUS;
+};
+
 const CustomTooltip = ({
   datakey,
   payload,
@@ -99,6 +115,7 @@ export {
   COLORS,
   getMetricAvg,
   getMetricAvgFromRange,
+  isMetricOutOfRange,
   CustomTooltip,
   CustomizedAxisTick,
   xAxisTickFormatter,

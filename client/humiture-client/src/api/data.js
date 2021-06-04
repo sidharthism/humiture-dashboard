@@ -1,14 +1,18 @@
-import { useState, useEffect, useReducer } from "react";
+import { useState, useEffect } from "react";
 
-import { getMetricAvg, getMetricAvgFromRange } from "../utils";
+import { useRangeErrorReducer } from "../reducers";
+import { isMetricOutOfRange, getMetricAvgFromRange } from "../utils";
 
 const useAPIReportData = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({
+    temperatureData: [],
+    humidityData: [],
+  });
 
   useEffect(() => {
     fetchData();
     return () => {
-      setData([]);
+      setData({});
     };
   }, []);
 
@@ -24,19 +28,13 @@ const useAPIReportData = () => {
           .filter((r) => r.Temperature !== undefined)
           .map(({ Day, Temperature }) => ({ Day, Temperature }));
 
-        // let tA = getMetricAvg(temperatureFiltured, "Temperature");
-
         let humidityFiltured = json.data
           .filter((r) => r.Humidity !== undefined)
           .map(({ Day, Humidity }) => ({ Day, Humidity }));
 
-        // let hA = getMetricAvg(humidityFiltured, "Humidity");
-
         let filteredData = {
           temperatureData: [...temperatureFiltured],
-          // temperatureAvg: tA.toFixed(1),
           humidityData: [...humidityFiltured],
-          // humidityAvg: hA.toFixed(1),
         };
 
         console.log(filteredData);
@@ -53,7 +51,7 @@ const useAPIReportData = () => {
 
 /**
  *
- *   @Interface STATE
+ *   @returns
  *  {
  *   temperatureData: [], // {Day: "", Temperature: ""}
  *   humidityData: [], // {Day: "", Humidity: ""},
@@ -67,6 +65,8 @@ const useAPIReportData = () => {
 
 const useReportData = () => {
   const { temperatureData = [], humidityData = [] } = useAPIReportData();
+
+  const [rangeError, dispatchRangeError] = useRangeErrorReducer();
 
   const [temperatureIndexRange, setTemperatureIndexRange] = useState({
     start: 0,
@@ -102,6 +102,55 @@ const useReportData = () => {
     });
   }, [humidityData]);
 
+  useEffect(() => {
+    if (temperatureIndexRange.start !== 0 && temperatureIndexRange.end !== 0) {
+      dispatchRangeError({ type: "RESET" });
+
+      let tempRange = isMetricOutOfRange(
+        "TEMPERATURE",
+        21,
+        25,
+        temperatureIndexRange.avg
+      );
+
+      if (tempRange.status !== "OK") {
+        dispatchRangeError({
+          type: "TEMPERATURE",
+          payload: {
+            status: tempRange.status,
+            error: tempRange.error,
+            reported: false,
+          },
+        });
+      }
+      // console.log(rangeError);
+    }
+  }, [temperatureIndexRange]);
+
+  useEffect(() => {
+    if (humidityIndexRange.start !== 0 && humidityIndexRange.end !== 0) {
+      dispatchRangeError({ type: "RESET" });
+
+      let humidityRange = isMetricOutOfRange(
+        "HUMIDITY",
+        40,
+        60,
+        humidityIndexRange.avg
+      );
+      if (humidityRange.status !== "OK") {
+        dispatchRangeError({
+          type: "HUMIDITY",
+          payload: {
+            status: humidityRange.status,
+            error: humidityRange.error,
+            reported: false,
+          },
+        });
+      }
+      // console.log(rangeError);
+    }
+  }, [humidityIndexRange]);
+
   function handleTemperatureIndexRangeChange({ startIndex, endIndex }) {
     setTemperatureIndexRange({
       start: Math.round(startIndex),
@@ -133,6 +182,8 @@ const useReportData = () => {
     humidityData, // {Day: "", Humidity: ""},
     temperatureIndexRange, // { start: 0, end: 0, avg: 0,}
     humidityIndexRange, // { start: 0, end: 0, avg: 0,}
+    rangeError,
+    handleRangeErrorReported: () => dispatchRangeError({ type: "REPORTED" }),
     handleTemperatureIndexRangeChange,
     handleHumidityIndexRangeChange,
   };

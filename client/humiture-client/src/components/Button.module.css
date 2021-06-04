@@ -21,3 +21,12 @@
   transform: translateY(0px);
   box-shadow: none;
 }
+
+.button[disabled]:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.button[disabled]:active {
+  transform: none !important;
+}

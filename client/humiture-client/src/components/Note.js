@@ -18,10 +18,15 @@ function AddNote(props) {
       <InputField
         onChange={(e) => setNote(e.target.value)}
         value={note}
+        required={props.required || false}
         styles={styles.noteFieldContainer}
         placeholder="Add note"
       />
-      <Button styles={[styles.addButton]} onClick={handleAdd}>
+      <Button
+        disabled={note === ""}
+        styles={[styles.addButton]}
+        onClick={handleAdd}
+      >
         <img src={addIcon} alt="Add" />
       </Button>
     </div>

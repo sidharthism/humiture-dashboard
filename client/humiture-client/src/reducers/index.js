@@ -1,5 +1,32 @@
 import { useReducer } from "react";
 
+import { AUTH_STATE as INITIAL_AUTH_STATE, AUTH_STATUS } from "../contexts/";
+
+// AUTH REDUCER
+
+export const ACTION_TYPES = {
+  SET_USER: "SET_USER",
+  RESET_USER: "RESET_USER",
+};
+
+const authReducer = (state, action) => {
+  console.log(action);
+
+  switch (action.type) {
+    case ACTION_TYPES.SET_USER:
+      return {
+        ...state,
+        username: action.payload.username,
+        status: AUTH_STATUS.LOGGED_IN,
+        isAuthenticated: true,
+      };
+    case ACTION_TYPES.RESET_USER:
+      return INITIAL_AUTH_STATE;
+    default:
+      return { ...state };
+  }
+};
+
 // RANGE ERROR REDUCER
 
 const initialRangeErrorState = {
@@ -51,4 +78,4 @@ const useRangeErrorReducer = () => {
   return useReducer(rangeErrorReducer, initialRangeErrorState);
 };
 
-export { useRangeErrorReducer };
+export { authReducer, useRangeErrorReducer };

@@ -1,14 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import reportWebVitals from "./reportWebVitals";
+
+import App from "./App";
+
+import { authReducer } from "./reducers";
+import { AuthProvider, AUTH_STATE as INITIAL_AUTH_STATE } from "./contexts";
+
+import "./index.css";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <AuthProvider initialState={INITIAL_AUTH_STATE} reducer={authReducer}>
+      <App />
+    </AuthProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

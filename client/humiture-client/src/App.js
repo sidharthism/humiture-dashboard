@@ -4,9 +4,14 @@ import Navbar from "./components/Navbar";
 import Dashboard from "./components/Dashboard";
 import Home from "./components/Home";
 
+import { useAuthContext } from "./contexts";
+
 import "./App.css";
 
 function App() {
+  const auth = useAuthContext()[0];
+  console.log(auth);
+
   return (
     <Router>
       <div className="App">

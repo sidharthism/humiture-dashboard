@@ -4,15 +4,16 @@ import { useRangeErrorReducer } from "../reducers";
 import { isMetricOutOfRange, getMetricAvgFromRange } from "../utils";
 
 const useAPIReportData = () => {
-  const [data, setData] = useState({
+  const INITIAL_DATA = {
     temperatureData: [],
     humidityData: [],
-  });
+  };
+  const [data, setData] = useState(INITIAL_DATA);
 
   useEffect(() => {
     fetchData();
     return () => {
-      setData({});
+      setData(INITIAL_DATA);
     };
   }, []);
 
@@ -20,32 +21,35 @@ const useAPIReportData = () => {
    * @TODO Handle data timestamp
    */
 
-  const fetchData = () => {
-    fetch(`/data.json`)
-      .then((response) => response.json())
-      .then((json) => {
-        let temperatureFiltured = json.data
-          .filter((r) => r.Temperature !== undefined)
-          .map(({ Day, Temperature }) => ({ Day, Temperature }));
-
-        let humidityFiltured = json.data
-          .filter((r) => r.Humidity !== undefined)
-          .map(({ Day, Humidity }) => ({ Day, Humidity }));
-
-        let filteredData = {
-          temperatureData: [...temperatureFiltured],
-          humidityData: [...humidityFiltured],
-        };
-
-        console.log(filteredData);
-
-        setData(filteredData);
-      })
-      .catch((err) => {
-        console.error(err);
+  const fetchData = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/metrics/", {
+        headers: {
+          Authorization: "Token 86580313b60b4c83955034aac042346a8ef26bd8",
+        },
       });
-  };
+      const json = await response.json();
 
+      let temperatureFiltured = json
+        .filter((r) => r.Temperature !== "")
+        .map(({ Day, Temperature }) => ({ Day, Temperature }));
+
+      let humidityFiltured = json
+        .filter((r) => r.Humidity !== "")
+        .map(({ Day, Humidity }) => ({ Day, Humidity }));
+
+      let filteredData = {
+        temperatureData: [...temperatureFiltured],
+        humidityData: [...humidityFiltured],
+      };
+
+      console.log(filteredData);
+      setData(filteredData);
+    } catch (err) {
+      console.error(err);
+      setData(INITIAL_DATA);
+    }
+  };
   return data;
 };
 

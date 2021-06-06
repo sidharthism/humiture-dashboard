@@ -1,7 +1,8 @@
-from .models import Note
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from rest_framework import serializers
+
+from .models import Note, MetricRec
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -28,6 +29,12 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         token = Token.objects.create(user=user)
         return {'username': user.username, 'token': token.key}
+
+
+class MetricRecSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MetricRec
+        fields = '__all__'
 
 
 class NoteSerializer(serializers.ModelSerializer):

@@ -10,6 +10,7 @@ function InputField(props) {
       <input
         className={styles.field}
         type={props.type || "text"}
+        dtype={props.dtype || "text"}
         placeholder={props.placeholder || ""}
         required={props.required || false}
         pattern={props.pattern || undefined}

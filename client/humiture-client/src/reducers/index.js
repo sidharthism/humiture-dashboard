@@ -1,12 +1,13 @@
 import { useReducer } from "react";
 
-import { AUTH_STATE as INITIAL_AUTH_STATE, AUTH_STATUS } from "../contexts/";
+import { AUTH_STATE as INITIAL_AUTH_STATE } from "../contexts/";
 
 // AUTH REDUCER
 
-export const ACTION_TYPES = {
+const ACTION_TYPES = {
   SET_USER: "SET_USER",
   RESET_USER: "RESET_USER",
+  NO_USER: "NO_USER",
 };
 
 const authReducer = (state, action) => {
@@ -15,10 +16,15 @@ const authReducer = (state, action) => {
   switch (action.type) {
     case ACTION_TYPES.SET_USER:
       return {
-        ...state,
         username: action.payload.username,
-        status: AUTH_STATUS.LOGGED_IN,
+        token: action.payload.token,
         isAuthenticated: true,
+        loading: false,
+      };
+    case ACTION_TYPES.NO_USER:
+      return {
+        ...state,
+        loading: false,
       };
     case ACTION_TYPES.RESET_USER:
       return INITIAL_AUTH_STATE;
@@ -78,4 +84,4 @@ const useRangeErrorReducer = () => {
   return useReducer(rangeErrorReducer, initialRangeErrorState);
 };
 
-export { authReducer, useRangeErrorReducer };
+export { ACTION_TYPES, authReducer, useRangeErrorReducer };

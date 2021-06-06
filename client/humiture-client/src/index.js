@@ -4,16 +4,11 @@ import reportWebVitals from "./reportWebVitals";
 
 import App from "./App";
 
-import { authReducer } from "./reducers";
-import { AuthProvider, AUTH_STATE as INITIAL_AUTH_STATE } from "./contexts";
-
 import "./index.css";
 
 ReactDOM.render(
   <React.StrictMode>
-    <AuthProvider initialState={INITIAL_AUTH_STATE} reducer={authReducer}>
-      <App />
-    </AuthProvider>
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );

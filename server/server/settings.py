@@ -111,9 +111,22 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': os.environ.get('DB_NAME'),
-        'HOST': os.environ.get('DB_HOST'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'CLIENT': {
+            'host': os.environ.get('DB_HOST'),
+            'port': 27017,
+            'username': os.environ.get('DB_USER'),
+            'password': os.environ.get('DB_PASSWORD'),
+            'authSource': os.environ.get('DB_NAME'),
+            'authMechanism': 'SCRAM-SHA-1'
+        }, 'LOGGING': {
+            'version': 1,
+            'loggers': {
+                'djongo': {
+                    'level': 'DEBUG',
+                    'propagate': False,
+                }
+            },
+        }
     }
 }
 

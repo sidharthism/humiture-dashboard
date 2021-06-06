@@ -2,7 +2,7 @@ import logo from "../assets/logo.svg";
 import avatar from "../assets/avatar.svg";
 import styles from "./Navbar.module.css";
 
-function Navbar() {
+function Navbar({ user }) {
   return (
     <div className={styles.navContainer}>
       <div className={styles.navbar}>
@@ -11,7 +11,7 @@ function Navbar() {
           <h2>Humiture dashboard</h2>
         </div>
         <div className={styles.userInfo}>
-          <h4>Jane Doe</h4>
+          <h4>{user}</h4>
           <span className={styles.chevronDown}>
             <svg
               width="24"

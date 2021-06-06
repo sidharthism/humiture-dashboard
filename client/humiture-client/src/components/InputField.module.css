@@ -26,13 +26,15 @@
 }
 
 .field[type="email"]::placeholder,
-.field[type="password"]::placeholder {
+.field[type="password"]::placeholder,
+.field[dtype="username"]::placeholder {
   opacity: 0;
   transition: opacity 0.2s ease-out;
 }
 
 .field[type="email"]:focus::placeholder,
-.field[type="password"]:focus::placeholder {
+.field[type="password"]:focus::placeholder,
+.field[dtype="username"]:focus::placeholder {
   opacity: 1;
 }
 

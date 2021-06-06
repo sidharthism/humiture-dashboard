@@ -1,28 +1,27 @@
-import React, { createContext, useContext, useReducer } from "react";
+import React, { createContext, useContext, useReducer, useState } from "react";
 
-const AUTH_STATUS = {
-  LOGGED_OUT: "LOGGED_OUT",
-  LOGGED_IN: "LOGGED_IN",
-};
+// const AUTH_STATUS = {
+//   LOGGED_OUT: "LOGGED_OUT",
+//   LOGGED_IN: "LOGGED_IN",
+// };
 
 /**
- * @AUTH_STATE {username: "", status: (AUTH_STATUS), isAuthenticated: boolean}
+ * @AUTH_STATE {username: "", token: (Token), isAuthenticated: boolean}
  */
 
 const AUTH_STATE = {
   username: "",
-  status: "LOGGED_OUT",
+  token: "",
   isAuthenticated: false,
+  loading: false,
 };
 
 const AuthContext = createContext(AUTH_STATE);
 
-const AuthProvider = ({ reducer, initialState, children }) => (
-  <AuthContext.Provider value={useReducer(reducer, initialState)}>
-    {children}
-  </AuthContext.Provider>
+const AuthProvider = ({ value, children }) => (
+  <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 );
 
 const useAuthContext = () => useContext(AuthContext);
 
-export { AUTH_STATE, AUTH_STATUS, AuthProvider, useAuthContext };
+export { AUTH_STATE, AuthProvider, useAuthContext };

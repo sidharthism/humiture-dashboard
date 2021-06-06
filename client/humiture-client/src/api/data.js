@@ -23,9 +23,9 @@ const useAPIReportData = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://localhost:8000/metrics/", {
+      const response = await fetch("https://humiture.herokuapp.com/metrics/", {
         headers: {
-          Authorization: "Token 86580313b60b4c83955034aac042346a8ef26bd8",
+          Authorization: "Token 14f8695f1941ad9e81d0e7ee542c91448c33b889",
         },
       });
       const json = await response.json();

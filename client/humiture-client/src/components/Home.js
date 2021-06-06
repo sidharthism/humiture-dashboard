@@ -1,8 +1,8 @@
-import { AuthLoginForm } from "./AuthForms";
+import { AuthForm } from "./AuthForms";
 
 import styles from "./Home.module.css";
 
-function Home() {
+function Home(props) {
   return (
     <div className={styles.container}>
       <div className={styles.leftContainer}>
@@ -13,7 +13,7 @@ function Home() {
       </div>
 
       <div className={styles.authContainer}>
-        <AuthLoginForm />
+        <AuthForm path={props.path} handleAuth={props.handleAuth} />
       </div>
     </div>
   );

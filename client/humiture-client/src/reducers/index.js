@@ -11,8 +11,7 @@ const ACTION_TYPES = {
 };
 
 const authReducer = (state, action) => {
-  console.log(action);
-
+  // console.log(action);
   switch (action.type) {
     case ACTION_TYPES.SET_USER:
       return {

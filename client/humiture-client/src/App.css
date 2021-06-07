@@ -64,6 +64,10 @@ div {
   transition: all 0.3s ease;
 }
 
+a {
+  text-decoration: none;
+}
+
 .recharts-legend-wrapper {
   bottom: -12px !important;
 }

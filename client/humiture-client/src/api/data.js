@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 
 import { useRangeErrorReducer } from "../reducers";
+
+import { API_ROOT } from "./config";
+
 import { isMetricOutOfRange, getMetricAvgFromRange } from "../utils";
 
 const useAPIReportData = () => {
@@ -19,16 +22,19 @@ const useAPIReportData = () => {
 
   /**
    * @TODO Handle data timestamp
+   * @TODO Refactor obtaining data into another function
    */
 
   const fetchData = async () => {
     try {
-      const response = await fetch("https://humiture.herokuapp.com/metrics/", {
+      const res = await fetch(`${API_ROOT}/metrics/`, {
         headers: {
-          Authorization: "Token 14f8695f1941ad9e81d0e7ee542c91448c33b889",
+          Authorization: `Token ${
+            JSON.parse(localStorage.getItem("USER")).token || ""
+          }`,
         },
       });
-      const json = await response.json();
+      const json = await res.json();
 
       let temperatureFiltured = json
         .filter((r) => r.Temperature !== "")
@@ -193,14 +199,82 @@ const useReportData = () => {
   };
 };
 
-// const STORE = {
-//   data: [],
-//   status: "LOADING", // "LOADING", "ERROR", "SUCCESS"
-//   error: {},
-// };
+const fetchNotes = async () => {
+  try {
+    const res = await fetch(`${API_ROOT}/notes/`, {
+      headers: {
+        Authorization: `Token ${
+          JSON.parse(localStorage.getItem("USER")).token || ""
+        }`,
+      },
+    });
+    if (res.status !== 200) {
+      throw new Error("Error fetching notes!");
+    } else {
+      const notes = await res.json();
+      return notes;
+    }
+  } catch (err) {
+    console.log(err.message);
+    return [];
+  }
+};
 
-// const useData = () => {
-//   const [data, dispatch] = useReducer();
-// };
+const useNotesData = () => {
+  const [noteList, setNoteList] = useState([]);
+  useEffect(() => {
+    fetchNotes()
+      .then((notes) => setNoteList(notes))
+      .catch((err) => console.log(err));
+    return () => setNoteList([]);
+  }, []);
 
-export { useReportData };
+  const handleAddNote = async (note) => {
+    try {
+      const res = await fetch(`${API_ROOT}/notes/`, {
+        method: "POST",
+        headers: {
+          Authorization: `Token ${
+            JSON.parse(localStorage.getItem("USER")).token || ""
+          }`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ content: note }),
+      });
+      if (res.status !== 201) {
+        throw new Error("Error adding note!");
+      } else {
+        const notes = await fetchNotes();
+        if (notes.length !== 0) setNoteList(notes);
+      }
+    } catch (err) {
+      console.log(err.message);
+      //handle error
+    }
+  };
+
+  const handleDeleteNote = async (id) => {
+    try {
+      const res = await fetch(`${API_ROOT}/note/${id}/`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Token ${
+            JSON.parse(localStorage.getItem("USER")).token || ""
+          }`,
+        },
+      });
+      if (res.status !== 204) {
+        throw new Error("Error deleting note!");
+      } else {
+        const notes = await fetchNotes();
+        if (notes.length !== 0) setNoteList(notes);
+      }
+    } catch (err) {
+      console.log(err.message);
+      // handle error
+    }
+  };
+  return { noteList, handleAddNote, handleDeleteNote };
+};
+
+export { useReportData, useNotesData };

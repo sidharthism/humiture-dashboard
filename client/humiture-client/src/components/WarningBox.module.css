@@ -19,6 +19,8 @@
   color: var(--white);
   outline: none;
   border: none;
+  font-family: "Josefin Sans", sans-serif;
+  padding: 0.37rem;
 }
 
 @media (orientation: landscape) and (min-width: 978px) {

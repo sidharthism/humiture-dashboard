@@ -2,13 +2,19 @@ import logo from "../assets/logo.svg";
 import avatar from "../assets/avatar.svg";
 import styles from "./Navbar.module.css";
 
+import { handleAppLogout } from "../api";
 import { useAuthContext } from "../contexts";
 
 function Navbar() {
   const {
-    auth: { username },
+    auth: { username, isAuthenticated },
     dispatchAuth,
   } = useAuthContext();
+
+  const handleLogout = () => {
+    handleAppLogout();
+    dispatchAuth({ type: "RESET_USER" });
+  };
   return (
     <div className={styles.navContainer}>
       <div className={styles.navbar}>
@@ -16,9 +22,11 @@ function Navbar() {
           <img src={logo} alt="logo" />
           <h2>Humiture dashboard</h2>
         </div>
-        <div className={styles.userInfo}>
-          <h4>{username}</h4>
-          <span className={styles.chevronDown}>
+        {isAuthenticated && (
+          <>
+            <div className={styles.userInfo}>
+              <h4>{username}</h4>
+              {/* <span className={styles.chevronDown}>
             <svg
               width="24"
               height="24"
@@ -34,16 +42,16 @@ function Navbar() {
                 strokeLinejoin="round"
               />
             </svg>
-          </span>
-          <span className={styles.avatar}>
-            <img src={avatar} alt="Avatar" />
-          </span>
-        </div>
-        <div>
-          <button onClick={() => dispatchAuth({ type: "RESET_USER" })}>
-            Logout
-          </button>
-        </div>
+          </span> */}
+              <span className={styles.avatar}>
+                <img src={avatar} alt="Avatar" />
+              </span>
+              <span className={styles.logoutWrap}>
+                <button onClick={handleLogout}>Logout</button>
+              </span>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ function Home(props) {
       </div>
 
       <div className={styles.authContainer}>
-        <AuthForm path={props.path} handleAuth={props.handleAuth} />
+        <AuthForm path={props.path} />
       </div>
     </div>
   );

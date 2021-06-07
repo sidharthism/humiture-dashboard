@@ -1,6 +1,5 @@
 import { useState } from "react";
-
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import CardContainer from "./CardContainer";
 import InputField from "./InputField";
@@ -8,7 +7,7 @@ import Button from "./Button";
 
 import styles from "./AuthForms.module.css";
 
-import { handleAPPLogin } from "../api";
+import { handleAppLogin, handleAppRegister } from "../api";
 import { ACTION_TYPES } from "../reducers";
 import { useAuthContext as useAPPAuthContext } from "../contexts";
 
@@ -32,7 +31,7 @@ function AuthLoginForm() {
 
   const handleLogin = async (username, password) => {
     setLoading(true);
-    let { user, error, message } = await handleAPPLogin(username, password);
+    let { user, error, message } = await handleAppLogin(username, password);
     if (error) {
       setUsername("");
       setPassword("");
@@ -57,6 +56,7 @@ function AuthLoginForm() {
           label="Username"
           value={username}
           title="Username"
+          // pattern=".{5,}"
           placeholder="Enter your username"
           onChange={(e) => setUsername(e.target.value)}
         />
@@ -78,45 +78,105 @@ function AuthLoginForm() {
           onClick={() => handleLogin(username, password)}
           disabled={loading}
         >
-          Login
+          {loading ? "Authenticating..." : "Login"}
         </Button>
-        <p className={styles.createAccount}>
-          Haven’t registered? Create account
-        </p>
+        <Link to="/register">
+          <p className={styles.createAccount}>
+            Haven’t registered? Create account
+          </p>
+        </Link>
       </form>
     </CardContainer>
   );
 }
 
 function AuthRegisterForm() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [error, setError] = useState({ err: false, message: "" });
+  const [loading, setLoading] = useState(false);
+
+  const { dispatchAuth } = useAPPAuthContext();
+
+  const handleRegister = async (username, password, passwordConfirm) => {
+    if (username === "" || password === "")
+      setError({ err: true, message: "Fill the required fields!" });
+    else if (password !== passwordConfirm)
+      setError({ err: true, message: "Passwords should match!" });
+    else {
+      setLoading(true);
+      setError({ err: false, message: "" });
+      let { user, error, message } = await handleAppRegister(
+        username,
+        password,
+        passwordConfirm
+      );
+      if (error) {
+        setUsername("");
+        setPassword("");
+        setPasswordConfirm("");
+        setError({ err: true, message: message });
+        console.log(message);
+        setLoading(false);
+      } else dispatchAuth({ type: ACTION_TYPES.SET_USER, payload: user });
+    }
+  };
+
   return (
     <CardContainer styles={[styles.auth]}>
       <form className={styles.authForm} onSubmit={(e) => e.preventDefault()}>
         <h2 className={styles.authFormHeader}>Register</h2>
-        <p className={styles.errorInfo}>Invalid credentials!</p>
+        {error && <p className={styles.errorInfo}>{error.message}</p>}
         <InputField
-          styles={[styles.emailField]}
-          type="email"
-          info="Required"
-          severity="warning"
+          styles={[styles.usernameField]}
+          type="test"
+          dtype="username"
+          value={username}
+          // info="Required"
+          // severity="warning"
           required={true}
-          label="E-mail"
-          placeholder="Enter your e-mail"
-          onChange={(e) => console.log(e.target.value)}
+          label="Username"
+          pattern=".{5,}"
+          title="Requires atleast 5 characters"
+          placeholder="Enter a username"
+          onChange={(e) => setUsername(e.target.value)}
         />
         <InputField
           type="password"
-          info="Required"
-          severity="warning"
-          placeholder="Enter your password"
+          value={password}
+          // info="Required"
+          // severity="warning"
+          placeholder="Enter a password"
           required={true}
+          onChange={(e) => setPassword(e.target.value)}
           label="Password"
+          pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,}$"
+          title="Requires atleast 6 characters (A-z, a-z, 0-9, and atleast one special character)"
+        />
+        <InputField
+          type="password"
+          value={passwordConfirm}
+          // info="Required"
+          // severity="warning"
+          placeholder="Confirm password"
+          required={true}
+          onChange={(e) => setPasswordConfirm(e.target.value)}
+          label="Confirm password"
           pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,}$"
           title="Requires 6 characters (A-z, a-z, 0-9, and atleast one special character)"
         />
-        <p className={styles.forgotPassword}>Forgot Password?</p>
-        <Button styles={[styles.authButton]}>Login</Button>
-        <p className={styles.createAccount}>Already registered? Login</p>
+        <Button
+          styles={[styles.authButton]}
+          type="submit"
+          disabled={loading}
+          onClick={() => handleRegister(username, password, passwordConfirm)}
+        >
+          {loading ? "Registering..." : "Register"}
+        </Button>
+        <Link to="/login">
+          <p className={styles.createAccount}>Already registered? Login</p>
+        </Link>
       </form>
     </CardContainer>
   );

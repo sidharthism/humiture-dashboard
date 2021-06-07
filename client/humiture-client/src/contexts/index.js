@@ -1,11 +1,4 @@
-import React, { createContext, useContext, useReducer, useState } from "react";
-
-import { authReducer } from "../reducers";
-
-// const AUTH_STATUS = {
-//   LOGGED_OUT: "LOGGED_OUT",
-//   LOGGED_IN: "LOGGED_IN",
-// };
+import React, { createContext, useContext } from "react";
 
 /**
  * @AUTH_STATE {username: "", token: (Token), isAuthenticated: boolean}

@@ -5,28 +5,26 @@ import { AddNote, SavedNote } from "./Note";
 
 import styles from "./NotesSection.module.css";
 
-const NOTES = [
-  { content: "This is a sample note" },
-  { content: "This is a sample note" },
-  { content: "This is a sample note" },
-];
+import { useNotesData } from "../api";
 
 function NotesSection() {
-  const [noteList, setNoteList] = useState(NOTES);
+  const { noteList, handleAddNote, handleDeleteNote } = useNotesData();
   return (
     <div className={styles.notesContainer}>
       <SectionHeader title="Notes" />
       <div className={styles.notesWrap}>
-        <AddNote
-          required={true}
-          onAdd={(n) => setNoteList((prev) => [...prev, { content: n }])}
-        />
+        <AddNote required={true} onAdd={(n) => handleAddNote(n)} />
         <ol className={styles.notesList}>
-          {noteList.map((note, index) => (
-            <li key={index}>
-              <SavedNote value={note.content} />
-            </li>
-          ))}
+          {noteList.length !== 0 &&
+            noteList.map((note) => (
+              <li key={note.id}>
+                <SavedNote
+                  value={note.content}
+                  id={note.id}
+                  onDelete={() => handleDeleteNote(note.id)}
+                />
+              </li>
+            ))}
         </ol>
       </div>
     </div>

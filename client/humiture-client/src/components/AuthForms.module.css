@@ -73,7 +73,7 @@
 }
 
 .createAccount:hover {
-  text-decoration: underline;
+  text-decoration: underline !important;
   cursor: pointer;
 }
 

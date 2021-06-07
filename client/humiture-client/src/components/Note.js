@@ -9,9 +9,12 @@ import styles from "./Note.module.css";
 
 function AddNote(props) {
   const [note, setNote] = useState("");
-  const handleAdd = () => {
-    props.onAdd(note);
+  const [loading, setLoading] = useState(false);
+  const handleAdd = async () => {
+    setLoading(true);
+    await props.onAdd(note);
     setNote("");
+    setLoading(false);
   };
   return (
     <div className={styles.noteContainer}>
@@ -23,7 +26,7 @@ function AddNote(props) {
         placeholder="Add note"
       />
       <Button
-        disabled={note === ""}
+        disabled={note === "" || loading}
         styles={[styles.addButton]}
         onClick={handleAdd}
       >
@@ -35,10 +38,9 @@ function AddNote(props) {
 
 function SavedNote(props) {
   const [loading, setLoading] = useState(false);
-  const handleDelete = () => {
+  const handleDelete = async () => {
     setLoading(true);
-    props.onDelete();
-    setLoading(false);
+    await props.onDelete();
   };
   return (
     <div className={styles.savedNoteContainer}>

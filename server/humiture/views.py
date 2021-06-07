@@ -2,9 +2,12 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 # from rest_framework import status
+import os
+import json
+import requests
 
 from rest_framework.generics import ListCreateAPIView, DestroyAPIView
-# from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
 
 from .serializers import UserSerializer, MetricRecSerializer, NoteSerializer
@@ -52,3 +55,14 @@ class NoteDeleteView(DestroyAPIView):
     def get_queryset(self):
         queryset = Note.objects.filter(id=self.kwargs['pk'])
         return queryset
+
+
+@api_view(["POST", ])
+@permission_classes([AllowAny, ])
+def siteverify(req, *args, **kwargs):
+    SECRET_KEY = os.environ.get("RECAPTCHA_SECRET_KEY")
+    token = json.loads(req.body.decode("utf-8"))["token"]
+    cres = requests.post(
+        "https://www.google.com/recaptcha/api/siteverify?secret="+SECRET_KEY+"&response="+token)
+    cres_json = cres.json()
+    return Response(cres_json)

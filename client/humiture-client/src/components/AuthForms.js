@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link, Redirect } from "react-router-dom";
+// import HCaptcha from "@hcaptcha/react-hcaptcha";
+import ReCaptcha from "react-google-recaptcha";
 
 import CardContainer from "./CardContainer";
 import InputField from "./InputField";
@@ -7,7 +9,11 @@ import Button from "./Button";
 
 import styles from "./AuthForms.module.css";
 
-import { handleAppLogin, handleAppRegister } from "../api";
+import {
+  handleAppLogin,
+  handleAppRegister,
+  handleReCAPTCHAVerification,
+} from "../api";
 import { ACTION_TYPES } from "../reducers";
 import { useAuthContext as useAPPAuthContext } from "../contexts";
 
@@ -29,16 +35,28 @@ function AuthLoginForm() {
 
   const { dispatchAuth } = useAPPAuthContext();
 
+  const reRef = useRef(null);
+
   const handleLogin = async (username, password) => {
+    const token = await reRef.current.executeAsync();
     setLoading(true);
-    let { user, error, message } = await handleAppLogin(username, password);
-    if (error) {
-      setUsername("");
-      setPassword("");
-      setError(true);
-      console.log(message);
+    reRef.current.reset();
+
+    const { success } = await handleReCAPTCHAVerification(token);
+    if (success) {
+      let { user, error, message } = await handleAppLogin(username, password);
+
+      if (error) {
+        setUsername("");
+        setPassword("");
+        setError(true);
+        console.log(message);
+        setLoading(false);
+      } else dispatchAuth({ type: ACTION_TYPES.SET_USER, payload: user });
+    } else {
+      console.log("CAPTCHA not verified!");
       setLoading(false);
-    } else dispatchAuth({ type: ACTION_TYPES.SET_USER, payload: user });
+    }
   };
 
   return (
@@ -73,6 +91,19 @@ function AuthLoginForm() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <p className={styles.forgotPassword}>Forgot Password?</p>
+        <div
+          style={{
+            position: "relative",
+            textAlign: "center",
+            margin: "1rem auto 0",
+          }}
+        >
+          <ReCaptcha
+            sitekey={"6LejbBsbAAAAAIaNkjeL9bdGRW0nWXPu3sZLiTcB"}
+            size="invisible"
+            ref={reRef}
+          />
+        </div>
         <Button
           styles={[styles.authButton]}
           onClick={() => handleLogin(username, password)}
@@ -99,27 +130,38 @@ function AuthRegisterForm() {
 
   const { dispatchAuth } = useAPPAuthContext();
 
+  const reRef = useRef(null);
+
   const handleRegister = async (username, password, passwordConfirm) => {
     if (username === "" || password === "")
       setError({ err: true, message: "Fill the required fields!" });
     else if (password !== passwordConfirm)
       setError({ err: true, message: "Passwords should match!" });
     else {
+      const token = await reRef.current.executeAsync();
       setLoading(true);
-      setError({ err: false, message: "" });
-      let { user, error, message } = await handleAppRegister(
-        username,
-        password,
-        passwordConfirm
-      );
-      if (error) {
-        setUsername("");
-        setPassword("");
-        setPasswordConfirm("");
-        setError({ err: true, message: message });
-        console.log(message);
+      reRef.current.reset();
+      const { success } = await handleReCAPTCHAVerification(token);
+      if (success) {
+        setError({ err: false, message: "" });
+        let { user, error, message } = await handleAppRegister(
+          username,
+          password,
+          passwordConfirm
+        );
+        if (error) {
+          setUsername("");
+          setPassword("");
+          setPasswordConfirm("");
+          setError({ err: true, message: message });
+          console.log(message);
+          setLoading(false);
+        } else dispatchAuth({ type: ACTION_TYPES.SET_USER, payload: user });
+      } else {
+        console.log("CAPTCHA not verified!");
+        setError({ err: true, message: "CAPTCHA not verified!" });
         setLoading(false);
-      } else dispatchAuth({ type: ACTION_TYPES.SET_USER, payload: user });
+      }
     }
   };
 
@@ -165,6 +207,11 @@ function AuthRegisterForm() {
           label="Confirm password"
           pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,}$"
           title="Requires 6 characters (A-z, a-z, 0-9, and atleast one special character)"
+        />
+        <ReCaptcha
+          sitekey={"6LejbBsbAAAAAIaNkjeL9bdGRW0nWXPu3sZLiTcB"}
+          size="invisible"
+          ref={reRef}
         />
         <Button
           styles={[styles.authButton]}

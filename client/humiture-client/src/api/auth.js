@@ -137,4 +137,29 @@ const handleAppLogout = () => {
   localStorage.removeItem("USER");
 };
 
-export { useAPPAuthInit, handleAppLogin, handleAppRegister, handleAppLogout };
+const handleReCAPTCHAVerification = async (token) => {
+  // console.log(token);
+  try {
+    const cres = await fetch(`${API_ROOT}/siteverify/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ token: token }),
+    });
+    const cresjson = await cres.json();
+    // console.log(cresjson);
+    return cresjson;
+  } catch (err) {
+    console.log(err);
+    return { success: false };
+  }
+};
+
+export {
+  useAPPAuthInit,
+  handleAppLogin,
+  handleAppRegister,
+  handleAppLogout,
+  handleReCAPTCHAVerification,
+};

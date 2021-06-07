@@ -30,7 +30,7 @@ function AuthForm({ path }) {
 function AuthLoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState({ err: false, message: "" });
   const [loading, setLoading] = useState(false);
 
   const { dispatchAuth } = useAPPAuthContext();
@@ -38,24 +38,33 @@ function AuthLoginForm() {
   const reRef = useRef(null);
 
   const handleLogin = async (username, password) => {
-    const token = await reRef.current.executeAsync();
-    setLoading(true);
-    reRef.current.reset();
+    if (username === "" || password === "")
+      setError({ err: true, message: "Fill the required fields!" });
+    else {
+      const token = await reRef.current.executeAsync();
+      setLoading(true);
+      reRef.current.reset();
 
-    const { success } = await handleReCAPTCHAVerification(token);
-    if (success) {
-      let { user, error, message } = await handleAppLogin(username, password);
+      const { success } = await handleReCAPTCHAVerification(token);
+      if (success) {
+        let {
+          user,
+          error: _error,
+          message,
+        } = await handleAppLogin(username, password);
 
-      if (error) {
-        setUsername("");
-        setPassword("");
-        setError(true);
-        console.log(message);
+        if (_error) {
+          setUsername("");
+          setPassword("");
+          setError({ err: true, message: "Invalid credentials!" });
+          console.log(message);
+          setLoading(false);
+        } else dispatchAuth({ type: ACTION_TYPES.SET_USER, payload: user });
+      } else {
+        console.log("CAPTCHA not verified!");
+        setError({ err: true, message: "CAPTCHA not verified!" });
         setLoading(false);
-      } else dispatchAuth({ type: ACTION_TYPES.SET_USER, payload: user });
-    } else {
-      console.log("CAPTCHA not verified!");
-      setLoading(false);
+      }
     }
   };
 
@@ -63,7 +72,7 @@ function AuthLoginForm() {
     <CardContainer styles={[styles.auth]}>
       <form className={styles.authForm} onSubmit={(e) => e.preventDefault()}>
         <h2 className={styles.authFormHeader}>Login</h2>
-        {error && <p className={styles.errorInfo}>Invalid credentials!</p>}
+        {error.err && <p className={styles.errorInfo}>{error.message}</p>}
         <InputField
           styles={[styles.usernameField]}
           type="text"
@@ -144,12 +153,12 @@ function AuthRegisterForm() {
       const { success } = await handleReCAPTCHAVerification(token);
       if (success) {
         setError({ err: false, message: "" });
-        let { user, error, message } = await handleAppRegister(
-          username,
-          password,
-          passwordConfirm
-        );
-        if (error) {
+        let {
+          user,
+          error: _error,
+          message,
+        } = await handleAppRegister(username, password, passwordConfirm);
+        if (_error) {
           setUsername("");
           setPassword("");
           setPasswordConfirm("");

@@ -18,9 +18,14 @@ function Navbar() {
   return (
     <div className={styles.navContainer}>
       <div className={styles.navbar}>
-        <div className={styles.branding}>
+        <div
+          className={[
+            styles.branding,
+            !isAuthenticated ? styles.notAuth : "",
+          ].join(" ")}
+        >
           <img src={logo} alt="logo" />
-          <h2>Humiture dashboard</h2>
+          <h2>{isAuthenticated ? "Humiture dashboard" : "Humiture"}</h2>
         </div>
         {isAuthenticated && (
           <>

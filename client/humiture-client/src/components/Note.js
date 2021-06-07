@@ -34,6 +34,12 @@ function AddNote(props) {
 }
 
 function SavedNote(props) {
+  const [loading, setLoading] = useState(false);
+  const handleDelete = () => {
+    setLoading(true);
+    props.onDelete();
+    setLoading(false);
+  };
   return (
     <div className={styles.savedNoteContainer}>
       <InputField
@@ -45,7 +51,11 @@ function SavedNote(props) {
           styles.savedNoteFieldContainer,
         ].join(" ")}
       />
-      <Button styles={[styles.deleteButton]} onClick={props.onDelete}>
+      <Button
+        disabled={loading}
+        styles={[styles.deleteButton]}
+        onClick={handleDelete}
+      >
         <img src={deleteIcon} alt="Delete" />
       </Button>
     </div>

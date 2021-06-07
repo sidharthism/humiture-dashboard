@@ -20,7 +20,7 @@ function NotesSection() {
               <li key={note.id}>
                 <SavedNote
                   value={note.content}
-                  id={note.id}
+                  // id={note.id}
                   onDelete={() => handleDeleteNote(note.id)}
                 />
               </li>

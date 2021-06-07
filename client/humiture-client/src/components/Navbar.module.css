@@ -75,7 +75,24 @@
 }
 
 @media (max-width: 400px) {
-  .userInfo {
+  .navContainer {
+    width: 100%;
+    padding: 1.5rem 2.7rem 0;
+  }
+  /* .userInfo {
     display: none;
+  } */
+  .branding {
+    width: 100%;
+    flex-direction: column;
+  }
+  .branding > h2 {
+    /* display: none; */
+    display: block;
+    font-size: 0.64rem;
+    text-align: center;
+  }
+  .notAuth {
+    margin: 0 auto;
   }
 }

@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useReducer, useState } from "react";
 
+import { authReducer } from "../reducers";
+
 // const AUTH_STATUS = {
 //   LOGGED_OUT: "LOGGED_OUT",
 //   LOGGED_IN: "LOGGED_IN",
@@ -16,7 +18,7 @@ const AUTH_STATE = {
   loading: false,
 };
 
-const AuthContext = createContext(AUTH_STATE);
+const AuthContext = createContext({ auth: AUTH_STATE, dispatchAuth: () => {} });
 
 const AuthProvider = ({ value, children }) => (
   <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

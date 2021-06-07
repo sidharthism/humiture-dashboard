@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Redirect, useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 import CardContainer from "./CardContainer";
 import InputField from "./InputField";
@@ -8,42 +8,47 @@ import Button from "./Button";
 
 import styles from "./AuthForms.module.css";
 
-import { useHandleAPPLogin } from "../api";
+import { handleAPPLogin } from "../api";
+import { ACTION_TYPES } from "../reducers";
 import { useAuthContext as useAPPAuthContext } from "../contexts";
 
-function AuthForm({ path, handleAuth }) {
-  const history = useHistory();
+function AuthForm({ path }) {
+  const { auth } = useAPPAuthContext();
 
-  const auth = history.location.state;
+  if (auth.isAuthenticated) return <Redirect to="/dashboard" />;
 
-  if (auth) return <Redirect to="/dashboard" />;
-
-  if (path === "login") return <AuthLoginForm handleAuth={handleAuth} />;
-  else if (path === "register")
-    return <AuthRegisterForm setAuth={handleAuth} />;
+  if (path === "login") return <AuthLoginForm />;
+  else if (path === "register") return <AuthRegisterForm />;
   else return <></>;
 }
 
-function AuthLoginForm({ handleAuth }) {
-  const history = useHistory();
-
-  const useHandleLogin = (u, p) => {
-    console.log(u, p);
-    useHandleAPPLogin(u, p, (_user) => {
-      history.push({ pathname: "/dashboard", state: _user });
-    });
-  };
-
+function AuthLoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const { dispatchAuth } = useAPPAuthContext();
+
+  const handleLogin = async (username, password) => {
+    setLoading(true);
+    let { user, error, message } = await handleAPPLogin(username, password);
+    if (error) {
+      setUsername("");
+      setPassword("");
+      setError(true);
+      console.log(message);
+      setLoading(false);
+    } else dispatchAuth({ type: ACTION_TYPES.SET_USER, payload: user });
+  };
 
   return (
     <CardContainer styles={[styles.auth]}>
-      <form className={styles.authForm}>
+      <form className={styles.authForm} onSubmit={(e) => e.preventDefault()}>
         <h2 className={styles.authFormHeader}>Login</h2>
-        {/* <p className={styles.errorInfo}>Invalid credentials!</p> */}
+        {error && <p className={styles.errorInfo}>Invalid credentials!</p>}
         <InputField
-          styles={[styles.emailField]}
+          styles={[styles.usernameField]}
           type="text"
           // info="Required"
           // severity="warning"
@@ -63,12 +68,16 @@ function AuthLoginForm({ handleAuth }) {
           required={true}
           value={password}
           label="Password"
-          // pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,}$"
+          pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,}$"
           title="Requires 6 characters (A-z, a-z, 0-9, and atleast one special character)"
           onChange={(e) => setPassword(e.target.value)}
         />
         <p className={styles.forgotPassword}>Forgot Password?</p>
-        <Button styles={[styles.authButton]} onClick={useHandleLogin}>
+        <Button
+          styles={[styles.authButton]}
+          onClick={() => handleLogin(username, password)}
+          disabled={loading}
+        >
           Login
         </Button>
         <p className={styles.createAccount}>
@@ -82,7 +91,7 @@ function AuthLoginForm({ handleAuth }) {
 function AuthRegisterForm() {
   return (
     <CardContainer styles={[styles.auth]}>
-      <form className={styles.authForm}>
+      <form className={styles.authForm} onSubmit={(e) => e.preventDefault()}>
         <h2 className={styles.authFormHeader}>Register</h2>
         <p className={styles.errorInfo}>Invalid credentials!</p>
         <InputField

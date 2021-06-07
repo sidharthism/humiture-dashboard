@@ -3,19 +3,14 @@ import { Redirect } from "react-router-dom";
 import ReportSection from "./ReportSection";
 import NotesSection from "./NotesSection";
 
-// import { COLORS } from "../utils";
-
 import styles from "./Dashboard.module.css";
 
-import { useAPPAuthInit } from "../api";
+import { useAuthContext } from "../contexts";
 
 function Dashboard() {
-  // let [color, setColor] = useState(COLORS.blue);
+  const { auth } = useAuthContext();
 
-  // const auth = useAPPAuthInit();
-  // console.log(auth);
-
-  // if (!auth.isAuthenticated) return <Redirect to="/login" />;
+  if (!auth.isAuthenticated) return <Redirect to="/login" />;
 
   return (
     <div className={styles.container}>

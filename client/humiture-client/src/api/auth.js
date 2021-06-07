@@ -1,69 +1,82 @@
-// Login and obtain token
-
-import { useHistory } from "react-router-dom";
-
 import { useEffect, useReducer, useState } from "react";
 // import axios from "axios";
 
-// import { authReducer } from "../reducers";
-// import { ACTION_TYPES } from "../reducers";
+import { authReducer } from "../reducers";
+import { ACTION_TYPES } from "../reducers";
 
 import { AUTH_STATE as INITIAL_AUTH_STATE, useAuthContext } from "../contexts";
 
 const useAPPAuthInit = () => {
-  const [auth, setAuth] = useState(INITIAL_AUTH_STATE);
+  const [auth, dispatchAuth] = useReducer(authReducer, INITIAL_AUTH_STATE); // Initializing auth
   console.log(auth);
 
   useEffect(() => {
     const _user = JSON.parse(localStorage.getItem("USER"));
     if (_user)
-      setAuth({
-        username: _user.username,
-        token: _user.token,
-        isAuthenticated: true,
-        loading: false,
+      dispatchAuth({
+        type: ACTION_TYPES.SET_USER,
+        payload: {
+          username: _user.username,
+          token: _user.token,
+          isAuthenticated: true,
+          loading: false,
+        },
       });
-    else setAuth({ ...INITIAL_AUTH_STATE, loading: false });
-    // return [auth, setAuth];
+    else dispatchAuth({ type: ACTION_TYPES.NO_USER });
   }, []);
 
-  return [auth, setAuth];
+  return { auth, dispatchAuth };
 };
 
-const useHandleAPPLogin = (username, password, callback) => {
-  //   const setAuth = useAuthContext()[1];
-  fetch("http://localhost:8000/auth/login/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      username: username,
-      password: password,
-    }),
-  })
-    .then((res) => res.json())
-    .then((_user) => {
-      console.log(_user);
+// Login and obtain token
+
+const handleAPPLogin = async (username, password) => {
+  try {
+    let res = await fetch("http://localhost:8000/auth/login/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+    });
+
+    if (res.status !== 200) {
+      throw new Error(res.statusText);
+    } else {
+      let _user = await res.json();
 
       localStorage.setItem(
         "USER",
         JSON.stringify({
-          username: _user.username,
+          username: username,
           token: _user.token,
         })
       );
 
-      callback({
-        username: _user.username,
-        token: _user.token,
-        isAuthenticated: true,
-        loading: false,
-      });
-    })
-    .catch((err) => console.error(err));
-
-  callback({ ...INITIAL_AUTH_STATE, loading: false });
+      return {
+        user: {
+          username: username,
+          token: _user.token,
+          isAuthenticated: true,
+          loading: false,
+        },
+        error: false,
+        message: "Login success",
+      };
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      ...INITIAL_AUTH_STATE,
+      isAuthenticated: false,
+      loading: false,
+      error: true,
+      message: err.message,
+    };
+  }
 };
 
-export { useAPPAuthInit, useHandleAPPLogin };
+export { useAPPAuthInit, handleAPPLogin };

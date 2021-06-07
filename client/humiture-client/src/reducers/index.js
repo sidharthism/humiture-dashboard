@@ -23,7 +23,7 @@ const authReducer = (state, action) => {
       };
     case ACTION_TYPES.NO_USER:
       return {
-        ...state,
+        ...INITIAL_AUTH_STATE,
         loading: false,
       };
     case ACTION_TYPES.RESET_USER:

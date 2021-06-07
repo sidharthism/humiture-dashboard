@@ -1,4 +1,4 @@
-import { useAPPAuthInit, useHandleAPPLogin } from "./auth";
+import { useAPPAuthInit, handleAPPLogin } from "./auth";
 import { useReportData } from "./data";
 
-export { useAPPAuthInit, useHandleAPPLogin, useReportData };
+export { useAPPAuthInit, handleAPPLogin, useReportData };

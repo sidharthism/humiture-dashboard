@@ -9,7 +9,8 @@ A unified dashboard for monitoring humidity and temperature
 5. The database can be either a local MongoDB instance or an atlas instance. Create a .env file in /humiture-dashboard/server and specify the required config ( Check settings.py in /humiture-dashboard/server/server)
 6. In /humiture-dashboard/server run `python manage.py makemigrations` and `python manage.py migrate`
 7. [Optional] Create a django admin by running `python manage.py createsuperuser`
-8. Run `python manage.py runserver` - Starts server on port 8000
+8. In /humiture-dashboard/server run `python manage.py runscript load_metric_csv` to load Sample_Data.csv into the database
+9. Run `python manage.py runserver` - Starts server on port 8000
 
 #### Instructions for running frontend/client locally
 1. In /humiture-dashboard/client/humiture-client run `npm install` [Requires node and npm to be installed]
